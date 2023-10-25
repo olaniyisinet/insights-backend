@@ -1,0 +1,2145 @@
+{
+ "Resources": {
+  "DevInsightsUserTable755E2944": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "userEmail",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userEmail",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userStatus",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "userEmailIndex",
+      "KeySchema": [
+       {
+        "AttributeName": "userEmail",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "userStatus",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "KEYS_ONLY"
+      }
+     }
+    ],
+    "TableName": "DevInsightsUserTable"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/DevInsightsUserTable/DevInsightsUserTable/Resource"
+   }
+  },
+  "DevInsightsTenantTableFAC5BA57": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "tenantId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "tenantCode",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "tenantId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "tenantCode",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "tenantStatus",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "tenantCodeIndex",
+      "KeySchema": [
+       {
+        "AttributeName": "tenantCode",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "tenantStatus",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "TableName": "DevInsightsTenantTable"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/DevInsightsTenantTable/DevInsightsTenantTable/Resource"
+   }
+  },
+  "DevInsightsUserPool341E2DDE": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_email",
+       "Priority": 1
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": false
+    },
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "Thanks for signing up with RE24 Insights. Your verification code is {####}",
+    "EmailVerificationSubject": "RE24 Insights | You need to verify your email",
+    "Schema": [
+     {
+      "Mutable": false,
+      "Name": "email",
+      "Required": true
+     }
+    ],
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UserAttributeUpdateSettings": {
+     "AttributesRequireVerificationBeforeUpdate": [
+      "email"
+     ]
+    },
+    "UsernameAttributes": [
+     "email"
+    ],
+    "UserPoolName": "DevInsightsUserPool",
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "Thanks for signing up with RE24 Insights. Your verification code is {####}",
+     "EmailSubject": "RE24 Insights | You need to verify your email",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/DevInsightsUserPool/DevInsightsUserPool/Resource"
+   }
+  },
+  "DevInsightsUserPoolDevInsightsUserClient76D5FDFF": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "UserPoolId": {
+     "Ref": "DevInsightsUserPool341E2DDE"
+    },
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "ClientName": "DevInsightsUserClient",
+    "ExplicitAuthFlows": [
+     "ALLOW_USER_SRP_AUTH",
+     "ALLOW_REFRESH_TOKEN_AUTH"
+    ],
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/DevInsightsUserPool/DevInsightsUserPool/DevInsightsUserClient/Resource"
+   }
+  },
+  "DevInsightsBackendApi56BB6048": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "DevInsightsBackendApi"
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Resource"
+   }
+  },
+  "DevInsightsBackendApiDeploymentB7E775B6ce09353ffac50244d537a4c7642007fb": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "Description": "Automatically created by the RestApi construct"
+   },
+   "DependsOn": [
+    "DevInsightsBackendApiechogetGET97310217",
+    "DevInsightsBackendApiechogetOPTIONS4A732182",
+    "DevInsightsBackendApiechoget217D89FD",
+    "DevInsightsBackendApiechopostOPTIONS174075C5",
+    "DevInsightsBackendApiechopostPOSTCEEE2B89",
+    "DevInsightsBackendApiechopostE580FF1A",
+    "DevInsightsBackendApiGET9923DBCD",
+    "DevInsightsBackendApigraphbynameOPTIONS10DE8CB8",
+    "DevInsightsBackendApigraphbynamePOSTC09F4751",
+    "DevInsightsBackendApigraphbynameF9FCA230",
+    "DevInsightsBackendApiOPTIONS29921420",
+    "DevInsightsBackendApiuserinitialsetupOPTIONS11137E1E",
+    "DevInsightsBackendApiuserinitialsetupPOST4FFA798F",
+    "DevInsightsBackendApiuserinitialsetupD90F7FFD",
+    "DevInsightsBackendApiuserloadprofileOPTIONSA3114A7B",
+    "DevInsightsBackendApiuserloadprofilePOST1CBF9FDC",
+    "DevInsightsBackendApiuserloadprofileD1F96CA5"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Deployment/Resource"
+   }
+  },
+  "DevInsightsBackendApiDeploymentStagedevEB72B7B4": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "DeploymentId": {
+     "Ref": "DevInsightsBackendApiDeploymentB7E775B6ce09353ffac50244d537a4c7642007fb"
+    },
+    "StageName": "dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "DevInsightsBackendApiOPTIONS29921420": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/OPTIONS/Resource"
+   }
+  },
+  "DevInsightsBackendApiGETApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639GET01C93BFF": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "echoGetGreeting271BA102",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/",
+       {
+        "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+       },
+       "/GET/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/GET/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET.."
+   }
+  },
+  "DevInsightsBackendApiGETApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639GETE4EE2929": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "echoGetGreeting271BA102",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/test-invoke-stage/GET/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/GET/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET.."
+   }
+  },
+  "DevInsightsBackendApiGET9923DBCD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "GET",
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "echoGetGreeting271BA102",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/GET/Resource"
+   }
+  },
+  "DevInsightsBackendApiechoget217D89FD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "echo-get",
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/Resource"
+   }
+  },
+  "DevInsightsBackendApiechogetOPTIONS4A732182": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiechoget217D89FD"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/OPTIONS/Resource"
+   }
+  },
+  "DevInsightsBackendApiechogetGETApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639GETechoget72F5D90C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "echoGetMessageC96DD321",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/",
+       {
+        "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+       },
+       "/GET/echo-get"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/GET/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET..echo-get"
+   }
+  },
+  "DevInsightsBackendApiechogetGETApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639GETechogetB3232A6D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "echoGetMessageC96DD321",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/test-invoke-stage/GET/echo-get"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/GET/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET..echo-get"
+   }
+  },
+  "DevInsightsBackendApiechogetGET97310217": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "GET",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiechoget217D89FD"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "echoGetMessageC96DD321",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/GET/Resource"
+   }
+  },
+  "DevInsightsBackendApiechopostE580FF1A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "echo-post",
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/Resource"
+   }
+  },
+  "DevInsightsBackendApiechopostOPTIONS174075C5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiechopostE580FF1A"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/OPTIONS/Resource"
+   }
+  },
+  "DevInsightsBackendApiechopostPOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTechopostC3790884": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "echoPostMessage8E4952F3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/",
+       {
+        "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+       },
+       "/POST/echo-post"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..echo-post"
+   }
+  },
+  "DevInsightsBackendApiechopostPOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTechopost98C55C04": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "echoPostMessage8E4952F3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/test-invoke-stage/POST/echo-post"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..echo-post"
+   }
+  },
+  "DevInsightsBackendApiechopostPOSTCEEE2B89": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "POST",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiechopostE580FF1A"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "echoPostMessage8E4952F3",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/POST/Resource"
+   }
+  },
+  "DevInsightsBackendApiuserinitialsetupD90F7FFD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "user-initial-setup",
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/Resource"
+   }
+  },
+  "DevInsightsBackendApiuserinitialsetupOPTIONS11137E1E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiuserinitialsetupD90F7FFD"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/OPTIONS/Resource"
+   }
+  },
+  "DevInsightsBackendApiuserinitialsetupPOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserinitialsetup95A1CBD4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "userInitialSetup64E92CB1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/",
+       {
+        "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+       },
+       "/POST/user-initial-setup"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-initial-setup"
+   }
+  },
+  "DevInsightsBackendApiuserinitialsetupPOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserinitialsetupA8AC145E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "userInitialSetup64E92CB1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/test-invoke-stage/POST/user-initial-setup"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-initial-setup"
+   }
+  },
+  "DevInsightsBackendApiuserinitialsetupPOST4FFA798F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "POST",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiuserinitialsetupD90F7FFD"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "userInitialSetup64E92CB1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/POST/Resource"
+   }
+  },
+  "DevInsightsBackendApiuserloadprofileD1F96CA5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "user-load-profile",
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/Resource"
+   }
+  },
+  "DevInsightsBackendApiuserloadprofileOPTIONSA3114A7B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiuserloadprofileD1F96CA5"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/OPTIONS/Resource"
+   }
+  },
+  "DevInsightsBackendApiuserloadprofilePOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserloadprofile3C9E4D29": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "userLoadProfileA6FBB578",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/",
+       {
+        "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+       },
+       "/POST/user-load-profile"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-load-profile"
+   }
+  },
+  "DevInsightsBackendApiuserloadprofilePOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserloadprofile8DBCEA12": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "userLoadProfileA6FBB578",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/test-invoke-stage/POST/user-load-profile"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-load-profile"
+   }
+  },
+  "DevInsightsBackendApiuserloadprofilePOST1CBF9FDC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "POST",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApiuserloadprofileD1F96CA5"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "userLoadProfileA6FBB578",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/POST/Resource"
+   }
+  },
+  "DevInsightsBackendApigraphbynameF9FCA230": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "DevInsightsBackendApi56BB6048",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "graph-by-name",
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/Resource"
+   }
+  },
+  "DevInsightsBackendApigraphbynameOPTIONS10DE8CB8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApigraphbynameF9FCA230"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/OPTIONS/Resource"
+   }
+  },
+  "DevInsightsBackendApigraphbynamePOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTgraphbyname3747320E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "graphByName265EE971",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/",
+       {
+        "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+       },
+       "/POST/graph-by-name"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..graph-by-name"
+   }
+  },
+  "DevInsightsBackendApigraphbynamePOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTgraphbynameA10B69A3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "graphByName265EE971",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:eu-west-2:756385827350:",
+       {
+        "Ref": "DevInsightsBackendApi56BB6048"
+       },
+       "/test-invoke-stage/POST/graph-by-name"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..graph-by-name"
+   }
+  },
+  "DevInsightsBackendApigraphbynamePOSTC09F4751": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "POST",
+    "ResourceId": {
+     "Ref": "DevInsightsBackendApigraphbynameF9FCA230"
+    },
+    "RestApiId": {
+     "Ref": "DevInsightsBackendApi56BB6048"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "graphByName265EE971",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/POST/Resource"
+   }
+  },
+  "echoGetGreetingServiceRole83BDA1C2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoGetGreeting/echoGetGreeting/ServiceRole/Resource"
+   }
+  },
+  "echoGetGreeting271BA102": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "ae0aaadca1df5acc1abcf88ade053aa7fdf0e1e7b9feeab2aa75214ef40ea133.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "echoGetGreetingServiceRole83BDA1C2",
+      "Arn"
+     ]
+    },
+    "Handler": "echoGetGreeting.handler",
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "echoGetGreetingServiceRole83BDA1C2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoGetGreeting/echoGetGreeting/Resource",
+    "aws:asset:path": "asset.ae0aaadca1df5acc1abcf88ade053aa7fdf0e1e7b9feeab2aa75214ef40ea133",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "echoGetGreetingLogRetention8A2A22CD": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "echoGetGreeting271BA102"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoGetGreeting/echoGetGreeting/LogRetention/Resource"
+   }
+  },
+  "echoGetMessageServiceRole0F1FD8A5": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoGetMessage/echoGetMessage/ServiceRole/Resource"
+   }
+  },
+  "echoGetMessageC96DD321": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "4d2e3cb8063a3d41e3cca0ce6d2484ef601e0ad051e9abe6aa9cee0e1abb4984.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "echoGetMessageServiceRole0F1FD8A5",
+      "Arn"
+     ]
+    },
+    "Handler": "echoGetMessage.handler",
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "echoGetMessageServiceRole0F1FD8A5"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoGetMessage/echoGetMessage/Resource",
+    "aws:asset:path": "asset.4d2e3cb8063a3d41e3cca0ce6d2484ef601e0ad051e9abe6aa9cee0e1abb4984",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "echoGetMessageLogRetentionE57C85BA": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "echoGetMessageC96DD321"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoGetMessage/echoGetMessage/LogRetention/Resource"
+   }
+  },
+  "echoPostMessageServiceRoleA04F233A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoPostMessage/echoPostMessage/ServiceRole/Resource"
+   }
+  },
+  "echoPostMessage8E4952F3": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "8d586d728e433ee22b4fafe368f53ef2abbd3a35e128f4d8e467e5370a023c87.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "echoPostMessageServiceRoleA04F233A",
+      "Arn"
+     ]
+    },
+    "Handler": "echoPostMessage.handler",
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "echoPostMessageServiceRoleA04F233A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoPostMessage/echoPostMessage/Resource",
+    "aws:asset:path": "asset.8d586d728e433ee22b4fafe368f53ef2abbd3a35e128f4d8e467e5370a023c87",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "echoPostMessageLogRetentionB304A362": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "echoPostMessage8E4952F3"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/echoPostMessage/echoPostMessage/LogRetention/Resource"
+   }
+  },
+  "userInitialSetupServiceRole2FB25509": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/ServiceRole/Resource"
+   }
+  },
+  "userInitialSetupServiceRoleDefaultPolicyF6EA357B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DevInsightsUserTable755E2944",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DevInsightsUserTable755E2944",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DevInsightsTenantTableFAC5BA57",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DevInsightsTenantTableFAC5BA57",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "userInitialSetupServiceRoleDefaultPolicyF6EA357B",
+    "Roles": [
+     {
+      "Ref": "userInitialSetupServiceRole2FB25509"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "userInitialSetup64E92CB1": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "ff2b7e287bec1935738feb2339d1fbe86e9039aedddef7436505b5c1f9f60456.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "userInitialSetupServiceRole2FB25509",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "USER_TABLE_NAME": "DevInsightsUserTable",
+      "TENANT_TABLE_NAME": "DevInsightsTenantTable"
+     }
+    },
+    "Handler": "userInitialSetup.handler",
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "userInitialSetupServiceRoleDefaultPolicyF6EA357B",
+    "userInitialSetupServiceRole2FB25509"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/Resource",
+    "aws:asset:path": "asset.ff2b7e287bec1935738feb2339d1fbe86e9039aedddef7436505b5c1f9f60456",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "userInitialSetupLogRetention1955DC90": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "userInitialSetup64E92CB1"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/LogRetention/Resource"
+   }
+  },
+  "userLoadProfileServiceRole33036BB2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/ServiceRole/Resource"
+   }
+  },
+  "userLoadProfileServiceRoleDefaultPolicyBFEB1712": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DevInsightsUserTable755E2944",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DevInsightsUserTable755E2944",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DevInsightsTenantTableFAC5BA57",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DevInsightsTenantTableFAC5BA57",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "userLoadProfileServiceRoleDefaultPolicyBFEB1712",
+    "Roles": [
+     {
+      "Ref": "userLoadProfileServiceRole33036BB2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "userLoadProfileA6FBB578": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "96ff42cd4e93d4aed8465a34ca9ae8b9551b9d9957a689b1211f840b20a940f8.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "userLoadProfileServiceRole33036BB2",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "USER_TABLE_NAME": "DevInsightsUserTable",
+      "TENANT_TABLE_NAME": "DevInsightsTenantTable"
+     }
+    },
+    "Handler": "userLoadProfile.handler",
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "userLoadProfileServiceRoleDefaultPolicyBFEB1712",
+    "userLoadProfileServiceRole33036BB2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/Resource",
+    "aws:asset:path": "asset.96ff42cd4e93d4aed8465a34ca9ae8b9551b9d9957a689b1211f840b20a940f8",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "userLoadProfileLogRetention2865DAAA": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "userLoadProfileA6FBB578"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/LogRetention/Resource"
+   }
+  },
+  "graphByNameServiceRoleD6FA69E8": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/graphByName/graphByName/ServiceRole/Resource"
+   }
+  },
+  "graphByNameServiceRoleDefaultPolicy00A14C66": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DevInsightsUserTable755E2944",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DevInsightsUserTable755E2944",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DevInsightsTenantTableFAC5BA57",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DevInsightsTenantTableFAC5BA57",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "graphByNameServiceRoleDefaultPolicy00A14C66",
+    "Roles": [
+     {
+      "Ref": "graphByNameServiceRoleD6FA69E8"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/graphByName/graphByName/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "graphByName265EE971": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "f853d330e086aa5466ebc2c26faf9f1c650b4ecc99ab7027b12be318483085e0.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "graphByNameServiceRoleD6FA69E8",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "USER_TABLE_NAME": "DevInsightsUserTable",
+      "TENANT_TABLE_NAME": "DevInsightsTenantTable"
+     }
+    },
+    "Handler": "graphByName.handler",
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "graphByNameServiceRoleDefaultPolicy00A14C66",
+    "graphByNameServiceRoleD6FA69E8"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/graphByName/graphByName/Resource",
+    "aws:asset:path": "asset.f853d330e086aa5466ebc2c26faf9f1c650b4ecc99ab7027b12be318483085e0",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "graphByNameLogRetentionF6E2F033": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "graphByName265EE971"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/_/graphByName/graphByName/LogRetention/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:DeleteRetentionPolicy",
+        "logs:PutRetentionPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "Roles": [
+     {
+      "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Handler": "index.handler",
+    "Runtime": "nodejs16.x",
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-756385827350-eu-west-2",
+     "S3Key": "5fa1330271b8967d9254ba2d4a07144f8acefe8b77e6d6bba38261373a50d5f8.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource",
+    "aws:asset:path": "asset.5fa1330271b8967d9254ba2d4a07144f8acefe8b77e6d6bba38261373a50d5f8",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WRQU/DMAyFfwv3NDCQYNdtiBOIqsB5SlMvZE3iqk6Yqqr/nSRt0Tj583uO9azc8+0Tv7sRFypk0xZG13z88EK2LErHsRmcsNhE8VPUBtjh5DJMTKJy2iMfvwj6EtEk749XOBgNzl9bszIx0WklPFzEwMcKyO86ncZWfIbO4GCXx1ddDKdyjhniPIZewl4QsDfw39gkc6HVXTZnnpgRtm4EH6NYQm81kUbHXoKTPkGUV56YFjbmw/n0XEs0Wg6pnWli9HAUROCJ71KJPd8H2YLPoQwq4q+oKvAxf156Hes9+C54ll+mk7RT/9M6bICf6fZns+Wbx/hXZ9K66EPcZYFXc/0FbgZP7McBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "DevInsightsBackendStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "DevInsightsBackendApiEndpoint858B8EF8": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "DevInsightsBackendApi56BB6048"
+      },
+      ".execute-api.eu-west-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

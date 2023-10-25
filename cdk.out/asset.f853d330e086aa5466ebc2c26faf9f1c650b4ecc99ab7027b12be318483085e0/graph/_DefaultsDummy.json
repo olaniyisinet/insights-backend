@@ -1,0 +1,147 @@
+{
+    "dashboardStatistics": {
+        "renewablePercentageUnit": "%",
+        "renewablePercentageMin": 72,
+        "renewablePercentageMax": 88,
+        "dailyConsumptionUnit": "MWh",
+        "dailyConsumptionMin": 20,
+        "dailyConsumptionMax": 24,
+        "dailyConsumptionChange": 8,
+        "mostConsumedUnit": "MWh",
+        "mostConsumedMin": 3,
+        "mostConsumedMax": 4,
+        "mostConsumedBetween": "12:18",
+        "averagePriceUnit": "£/MWh",
+        "averagePriceMin": 180,
+        "averagePriceMax": 230,
+        "averagePriceChange": 4
+    },
+    "costSavings": {
+        "costSavingsPerDayUnit": "£",
+        "costSavingsPerDayMin": 1800,
+        "costSavingsPerDayMax": 2300,
+        "costSavingsPerDayChange": 6
+    },
+    "emissionSavings": {
+        "emissionSavingsPerDayUnit": "KgCO2",
+        "emissionSavingsPerDayMin": 3000,
+        "emissionSavingsPerDayMax": 5000
+    },
+    "renewableUsage": {
+        "renewableUsageUnit": "kWh",
+        "solarUsageDailyMin": 8000,
+        "solarUsageDailyMax": 12000,
+        "windUsageDailyMin": 4000,
+        "windUsageDailyMax": 10000,
+        "hydroUsageDailyMin": 2000,
+        "hydroUsageDailyMax": 6000
+    },
+    "ppaKpi": {
+        "ppaSupplyUnit": "kWh",
+        "ppaSupplyActualMin": 800,
+        "ppaSupplyActualMax": 1000,
+        "ppaSupplyExpectedMin": 800,
+        "ppaSupplyExpectedMax": 1000,
+        "assetAvailabilityUnit": "%",
+        "assetAvailabilityMin": 70,
+        "assetAvailabilityMax": 80,
+        "assetAvailabilityUsage": 68,
+        "regoCertificateUnit": "Count",
+        "regoActualMin": 100,
+        "regoActualMax": 120,
+        "regoExpectedMin": 110,
+        "regoExpectedMax": 130
+    },
+    "assetDashboardStatistics": {
+        "assetPerformancePercentageUnit": "%",
+        "assetPerformancePercentageMin": 20,
+        "assetPerformancePercentageMax": 103,
+        "energyGenerationUnit": "MWh",
+        "energyGenerationMin": 1500,
+        "energyGenerationMax": 2400,
+        "energyGenerationChange": 8,
+        "revenueUnit": "£",
+        "revenueMin": 700000,
+        "revenueMax": 999999,
+        "revenueChange": 20,
+        "averagePriceUnit": "£/MWh",
+        "averagePriceMin": 50,
+        "averagePriceMax": 150,
+        "averagePriceChange": 4
+    },
+    "assets": {
+        "totalAssets": 6,
+        "totalAssetsChange": 2
+    },
+    "assetsRevenue": {
+        "revenuePerDayUnit": "£",
+        "revenuePerDayMin": 100,
+        "revenuePerDayMax": 1000,
+        "revenuePerDayChange": 6
+    },
+    "assetsPortfolio": [
+        {
+            "company": "Tesco",
+            "pre": "T",
+            "value": 0.0,
+            "location": "London UK",
+            "color": "#FF0A44"
+        },
+        {
+            "company": "Sysco",
+            "pre": "S",
+            "value": 0,
+            "location": "Heathrow UK",
+            "color": "#0A6CFF"
+        },
+        {
+            "company": "Tesco",
+            "pre": "T",
+            "value": 0,
+            "location": "Glasgow UK",
+            "color": "#9C0CDF"
+        },
+        {
+            "company": "Sysco",
+            "pre": "S",
+            "value": 0,
+            "location": "Manchester UK",
+            "color": "#0EB683"
+        },
+        {
+            "company": "Tesco",
+            "pre": "T",
+            "value": 0,
+            "location": "Coventry UK",
+            "color": "#f56a00"
+        }
+    ],
+    "assetsREGO": {
+        "assetsRegoCertificateUnit": "Count",
+        "assetsRegoActualMin": 120,
+        "assetsRegoActualMax": 150,
+        "assetsRegoExpectedMin": 130,
+        "assetsRegoExpectedMax": 160
+    },
+    "assetvsGrid": {
+        "assetvsGridUnit": "%",
+        "assetvsGridUnitMin": 21,
+        "assetvsGridUnitMax": 79
+    },
+    "generatorppaKpi": {
+        "ppaAssetAvailabilityUnit": "%",
+        "ppaAssetAvailabilityMin": 70,
+        "ppaAssetAvailabilityMax": 80,
+        "ppaAssetAvailabilityUsage": 68,
+        "ppaSupplyUnit": "kWh",
+        "ppaSupplyActualMin": 800,
+        "ppaSupplyActualMax": 1000,
+        "ppaSupplyExpectedMin": 800,
+        "ppaSupplyExpectedMax": 1000,
+        "assetsPPAFinancialsUnit": "£",
+        "assetsPPAFinancialsActualMin": 1200,
+        "assetsPPAFinancialsActualMax": 1500,
+        "assetsPPAFinancialsExpectedMin": 1300,
+        "assetsPPAFinancialsExpectedMax": 1600
+    }
+}

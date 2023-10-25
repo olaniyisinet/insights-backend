@@ -1,0 +1,446 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "DevInsightsBackendStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "DevInsightsBackendStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "DevInsightsBackendStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://756385827350/eu-west-2",
+      "properties": {
+        "templateFile": "DevInsightsBackendStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::756385827350:role/cdk-hnb659fds-deploy-role-756385827350-eu-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::756385827350:role/cdk-hnb659fds-cfn-exec-role-756385827350-eu-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-756385827350-eu-west-2/509d2271c9810540bf694aad1b635c2c5bb6edd1bb6ed2cb1da405c7244224a2.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "DevInsightsBackendStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::756385827350:role/cdk-hnb659fds-lookup-role-756385827350-eu-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "DevInsightsBackendStack.assets"
+      ],
+      "metadata": {
+        "/DevInsightsBackendStack/DevInsightsUserTable/DevInsightsUserTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "DevInsightsUserTable755E2944"
+            }
+          }
+        ],
+        "/DevInsightsBackendStack/DevInsightsUserTable/DevInsightsUserTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsUserTable755E2944"
+          }
+        ],
+        "/DevInsightsBackendStack/DevInsightsTenantTable/DevInsightsTenantTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "DevInsightsTenantTableFAC5BA57"
+            }
+          }
+        ],
+        "/DevInsightsBackendStack/DevInsightsTenantTable/DevInsightsTenantTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsTenantTableFAC5BA57"
+          }
+        ],
+        "/DevInsightsBackendStack/DevInsightsUserPool/DevInsightsUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsUserPool341E2DDE"
+          }
+        ],
+        "/DevInsightsBackendStack/DevInsightsUserPool/DevInsightsUserPool/DevInsightsUserClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsUserPoolDevInsightsUserClient76D5FDFF"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApi56BB6048"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiDeploymentB7E775B6ce09353ffac50244d537a4c7642007fb"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/DeploymentStage.dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiDeploymentStagedevEB72B7B4"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiEndpoint858B8EF8"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiOPTIONS29921420"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/GET/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiGETApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639GET01C93BFF"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/GET/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiGETApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639GETE4EE2929"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiGET9923DBCD"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechoget217D89FD"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechogetOPTIONS4A732182"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/GET/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET..echo-get": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechogetGETApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639GETechoget72F5D90C"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/GET/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.GET..echo-get": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechogetGETApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639GETechogetB3232A6D"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-get/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechogetGET97310217"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechopostE580FF1A"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechopostOPTIONS174075C5"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..echo-post": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechopostPOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTechopostC3790884"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..echo-post": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechopostPOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTechopost98C55C04"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/echo-post/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiechopostPOSTCEEE2B89"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserinitialsetupD90F7FFD"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserinitialsetupOPTIONS11137E1E"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-initial-setup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserinitialsetupPOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserinitialsetup95A1CBD4"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-initial-setup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserinitialsetupPOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserinitialsetupA8AC145E"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-initial-setup/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserinitialsetupPOST4FFA798F"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserloadprofileD1F96CA5"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserloadprofileOPTIONSA3114A7B"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-load-profile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserloadprofilePOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserloadprofile3C9E4D29"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..user-load-profile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserloadprofilePOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTuserloadprofile8DBCEA12"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/user-load-profile/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApiuserloadprofilePOST1CBF9FDC"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApigraphbynameF9FCA230"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApigraphbynameOPTIONS10DE8CB8"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/POST/ApiPermission.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..graph-by-name": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApigraphbynamePOSTApiPermissionDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTgraphbyname3747320E"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/POST/ApiPermission.Test.DevInsightsBackendStackDevInsightsBackendApiA41DA639.POST..graph-by-name": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApigraphbynamePOSTApiPermissionTestDevInsightsBackendStackDevInsightsBackendApiA41DA639POSTgraphbynameA10B69A3"
+          }
+        ],
+        "/DevInsightsBackendStack/_/DevInsightsBackendApi/Default/graph-by-name/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DevInsightsBackendApigraphbynamePOSTC09F4751"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoGetGreeting/echoGetGreeting/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoGetGreetingServiceRole83BDA1C2"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoGetGreeting/echoGetGreeting/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoGetGreeting271BA102"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoGetGreeting/echoGetGreeting/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoGetGreetingLogRetention8A2A22CD"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoGetMessage/echoGetMessage/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoGetMessageServiceRole0F1FD8A5"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoGetMessage/echoGetMessage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoGetMessageC96DD321"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoGetMessage/echoGetMessage/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoGetMessageLogRetentionE57C85BA"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoPostMessage/echoPostMessage/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoPostMessageServiceRoleA04F233A"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoPostMessage/echoPostMessage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoPostMessage8E4952F3"
+          }
+        ],
+        "/DevInsightsBackendStack/_/echoPostMessage/echoPostMessage/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "echoPostMessageLogRetentionB304A362"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userInitialSetupServiceRole2FB25509"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userInitialSetupServiceRoleDefaultPolicyF6EA357B"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userInitialSetup64E92CB1"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userInitialSetup/userInitialSetup/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userInitialSetupLogRetention1955DC90"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userLoadProfileServiceRole33036BB2"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userLoadProfileServiceRoleDefaultPolicyBFEB1712"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userLoadProfileA6FBB578"
+          }
+        ],
+        "/DevInsightsBackendStack/_/userLoadProfile/userLoadProfile/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userLoadProfileLogRetention2865DAAA"
+          }
+        ],
+        "/DevInsightsBackendStack/_/graphByName/graphByName/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "graphByNameServiceRoleD6FA69E8"
+          }
+        ],
+        "/DevInsightsBackendStack/_/graphByName/graphByName/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "graphByNameServiceRoleDefaultPolicy00A14C66"
+          }
+        ],
+        "/DevInsightsBackendStack/_/graphByName/graphByName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "graphByName265EE971"
+          }
+        ],
+        "/DevInsightsBackendStack/_/graphByName/graphByName/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "graphByNameLogRetentionF6E2F033"
+          }
+        ],
+        "/DevInsightsBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ],
+        "/DevInsightsBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB"
+          }
+        ],
+        "/DevInsightsBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A"
+          }
+        ],
+        "/DevInsightsBackendStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/DevInsightsBackendStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/DevInsightsBackendStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "DevInsightsBackendStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

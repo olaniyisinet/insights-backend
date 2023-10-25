@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const cdk = require("aws-cdk-lib");
+const assertions_1 = require("aws-cdk-lib/assertions");
+const InsightsBackend = require("../lib/insights-backend-stack");
+const build_config_1 = require("../lib/build-config");
+test('S3 Buckets Created', () => {
+    const app = new cdk.App();
+    const buildConfig = (0, build_config_1.getConfig)(app);
+    // WHEN
+    const stack = new InsightsBackend.InsightsBackendStack(app, 'MyTestStack', buildConfig);
+    // THEN
+    const template = assertions_1.Template.fromStack(stack);
+    template.resourceCountIs('AWS::S3::Bucket', 0);
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5zaWdodHMtYmFja2VuZC50ZXN0LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiaW5zaWdodHMtYmFja2VuZC50ZXN0LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsbUNBQW1DO0FBQ25DLHVEQUFrRDtBQUNsRCxpRUFBaUU7QUFDakUsc0RBQWdEO0FBRWhELElBQUksQ0FBQyxvQkFBb0IsRUFBRSxHQUFHLEVBQUU7SUFDOUIsTUFBTSxHQUFHLEdBQUcsSUFBSSxHQUFHLENBQUMsR0FBRyxFQUFFLENBQUM7SUFDMUIsTUFBTSxXQUFXLEdBQUcsSUFBQSx3QkFBUyxFQUFDLEdBQUcsQ0FBQyxDQUFDO0lBQ25DLE9BQU87SUFDUCxNQUFNLEtBQUssR0FBRyxJQUFJLGVBQWUsQ0FBQyxvQkFBb0IsQ0FBQyxHQUFHLEVBQUUsYUFBYSxFQUFFLFdBQVcsQ0FBQyxDQUFDO0lBQ3hGLE9BQU87SUFFUCxNQUFNLFFBQVEsR0FBRyxxQkFBUSxDQUFDLFNBQVMsQ0FBQyxLQUFLLENBQUMsQ0FBQztJQUUzQyxRQUFRLENBQUMsZUFBZSxDQUFDLGlCQUFpQixFQUFFLENBQUMsQ0FBQyxDQUFDO0FBQ2pELENBQUMsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0ICogYXMgY2RrIGZyb20gJ2F3cy1jZGstbGliJztcbmltcG9ydCB7IFRlbXBsYXRlIH0gZnJvbSAnYXdzLWNkay1saWIvYXNzZXJ0aW9ucyc7XG5pbXBvcnQgKiBhcyBJbnNpZ2h0c0JhY2tlbmQgZnJvbSAnLi4vbGliL2luc2lnaHRzLWJhY2tlbmQtc3RhY2snO1xuaW1wb3J0IHsgZ2V0Q29uZmlnIH0gZnJvbSAnLi4vbGliL2J1aWxkLWNvbmZpZyc7XG5cbnRlc3QoJ1MzIEJ1Y2tldHMgQ3JlYXRlZCcsICgpID0+IHtcbiAgY29uc3QgYXBwID0gbmV3IGNkay5BcHAoKTtcbiAgY29uc3QgYnVpbGRDb25maWcgPSBnZXRDb25maWcoYXBwKTtcbiAgLy8gV0hFTlxuICBjb25zdCBzdGFjayA9IG5ldyBJbnNpZ2h0c0JhY2tlbmQuSW5zaWdodHNCYWNrZW5kU3RhY2soYXBwLCAnTXlUZXN0U3RhY2snLCBidWlsZENvbmZpZyk7XG4gIC8vIFRIRU5cblxuICBjb25zdCB0ZW1wbGF0ZSA9IFRlbXBsYXRlLmZyb21TdGFjayhzdGFjayk7XG5cbiAgdGVtcGxhdGUucmVzb3VyY2VDb3VudElzKCdBV1M6OlMzOjpCdWNrZXQnLCAwKTtcbn0pO1xuIl19

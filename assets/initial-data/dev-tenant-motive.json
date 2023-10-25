@@ -1,0 +1,67 @@
+{
+    "tenantId": "a170f7f2-857f-4cbe-8c27-58b476221136",
+    "tenantCode": "MOTIVE",
+    "dataFeedType": "DUMMY",
+    "tenantIconBgColor": "#0df091",
+    "tenantIconTextColor": "#000000",
+    "tenantNameFull": "Motive Fuels Limited",
+    "tenantNameShort": "MT",
+    "tenantPin": "11111",
+    "tenantStatus": "ACTIVE",
+    "tenantType": "SELLER",
+    "dataFeedParams": {
+        "dashboardStatistics": {
+            "renewablePercentageUnit": "%",
+            "renewablePercentageMin": 5,
+            "renewablePercentageMax": 8,
+            "dailyConsumptionUnit": "MWh",
+            "dailyConsumptionMin": 20,
+            "dailyConsumptionMax": 24,
+            "dailyConsumptionChange": 8,
+            "mostConsumedUnit": "MWh",
+            "mostConsumedMin": 2,
+            "mostConsumedMax": 3,
+            "mostConsumedBetween": "10:16",
+            "averagePriceUnit": "£/MWh",
+            "averagePriceMin": 160,
+            "averagePriceMax": 220,
+            "averagePriceChange": 4
+        },
+        "costSavings": {
+            "costSavingsPerDayUnit": "£", 
+            "costSavingsPerDayMin": 80,
+            "costSavingsPerDayMax": 100,
+            "costSavingsPerDayChange": 4
+        },
+        "emissionSavings": {
+            "emissionSavingsPerDayUnit": "KgCO2", 
+            "emissionSavingsPerDayMin": 260,
+            "emissionSavingsPerDayMax": 300
+        },
+        "renewableUsage": {
+            "renewableUsageUnit": "kWh",
+            "solarUsageDailyMin": 1200, 
+            "solarUsageDailyMax": 1500,
+            "windUsageDailyMin": 0,
+            "windUsageDailyMax": 0,
+            "hydroUsageDailyMin": 0,
+            "hydroUsageDailyMax": 0
+        },
+        "ppaKpi": {
+            "ppaSupplyUnit": "kWh",
+            "ppaSupplyActualMin": 1200,
+            "ppaSupplyActualMax": 1500,
+            "ppaSupplyExpectedMin": 1000,
+            "ppaSupplyExpectedMax": 1300,
+            "assetAvailabilityUnit": "%",
+            "assetAvailabilityMin": 92,
+            "assetAvailabilityMax": 98,
+            "assetAvailabilityUsage": 90,
+            "regoCertificateUnit": "Count",
+            "regoActualMax": 2.5,
+            "regoActualMin": 1,
+            "regoExpectedMax": 1.5,
+            "regoExpectedMin": 1
+        }
+    }
+}
